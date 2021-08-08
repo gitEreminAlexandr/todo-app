@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Header from '../Header';
 import Main from '../Main';
 import Footer from '../Footer';
-
 import './App.scss';
 
 export default class App extends Component {
@@ -12,7 +11,7 @@ export default class App extends Component {
     todoData: [
       { label: 'Completed task', date: 'Jun 03 2021 13:18:57', completed: true, edit: false, id: 123 },
       { label: 'Active task', date: 'Jun 03 2021 13:18:57', completed: false, edit: false, id: 124 },
-      { label: 'Editing task', date: 'Jun 03 2021 13:18:57', completed: true, edit: true, id: 125 },
+      { label: 'Editing task', date: 'Jun 03 2021 13:18:57', completed: true, edit: false, id: 125 },
       { label: 'Active 2', date: 'Jun 03 2021 13:18:57', completed: false, edit: false, id: 126 },
       { label: 'Completed 3', date: 'Jun 03 2021 13:18:57', completed: true, edit: false, id: 127 },
       { label: 'Active 3', date: 'Jun 03 2021 13:18:57', completed: false, edit: false, id: 128 },
@@ -20,8 +19,8 @@ export default class App extends Component {
     filterType: 'all',
   };
 
-  todoList = () => {
-    const {todoData, filterType} = this.state;
+  filterList = () => {
+    const { todoData, filterType } = this.state;
     return todoData.reduce((acc, item) => {
       if (filterType === 'active' && !item.completed) {
         acc.push(item);
@@ -36,18 +35,18 @@ export default class App extends Component {
       }
       return acc;
     }, []);
-  }
-
-  onFilterType = (text) => {
-    this.setState(() => ({
-      filterType: text,
-    }));
   };
 
-  addItem = (text) => {
+  onFilterType = (text) => {
+    this.setState({
+      filterType: text,
+    });
+  };
+
+  onAddItem = (text) => {
     const newItemTodo = {
       label: text,
-      date: new Date(),
+      date: `${new Date()}`,
       completed: false,
       edit: false,
       id: (this.id += 1),
@@ -62,7 +61,22 @@ export default class App extends Component {
     });
   };
 
-  deleteItem = (id) => {
+  onEditLabel = (id, newLabel) => {
+    this.setState(({ todoData }) => {
+      const newArrEditedLabel = todoData.map((item) => {
+        if (item.id === id) {
+          return { ...item, label: newLabel, edit: false };
+        }
+        return item;
+      });
+
+      return {
+        todoData: newArrEditedLabel,
+      };
+    });
+  };
+
+  onDeleteItem = (id) => {
     this.setState(({ todoData }) => {
       const newArrTodoData = todoData.filter((item) => item.id !== id);
 
@@ -72,16 +86,14 @@ export default class App extends Component {
     });
   };
 
-  newTodoList = (key, id) => {
+  taskStateChanges = (key, id) => {
     this.setState(({ todoData }) => {
       const newArrTodoData = todoData.map((item) => {
         if (item.id === id) {
-          // eslint-disable-next-line no-param-reassign
-          item[key] = !item[key];
+          return { ...item, [key]: !item[key] };
         }
         return item;
       });
-
       return {
         todoData: newArrTodoData,
       };
@@ -89,11 +101,11 @@ export default class App extends Component {
   };
 
   onToggleCompleted = (id) => {
-    this.newTodoList('completed', id);
+    this.taskStateChanges('completed', id);
   };
 
   onToggleEdit = (id) => {
-    this.newTodoList('edit', id);
+    this.taskStateChanges('edit', id);
     return id;
   };
 
@@ -108,8 +120,7 @@ export default class App extends Component {
   };
 
   render() {
-    const todoData = this.todoList();
-
+    const todoData = this.filterList();
     const complitedCount = todoData.filter((el) => !el.completed).length;
 
     return (
@@ -118,8 +129,9 @@ export default class App extends Component {
         <Main
           todos={todoData}
           filterType={this.filterType}
-          onAdd={this.addItem}
-          onDeleted={this.deleteItem}
+          onAdd={this.onAddItem}
+          onDeleted={this.onDeleteItem}
+          onEditLabel={this.onEditLabel}
           onToggleEdit={this.onToggleEdit}
           onToggleCompleted={this.onToggleCompleted}
         />

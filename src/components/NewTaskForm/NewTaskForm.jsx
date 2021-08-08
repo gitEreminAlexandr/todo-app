@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './NewTaskForm.scss';
 
-export default class NewTaskForm extends Component {
+class NewTaskForm extends Component {
   static defaultProps = {
     onAdd: () => {},
   };
@@ -27,7 +27,7 @@ export default class NewTaskForm extends Component {
     const { onAdd } = this.props;
     const { label } = this.state;
 
-    if (label.length >= 3) {
+    if (label.trim().length >= 3) {
       onAdd(label);
       this.setState({
         label: '',
@@ -49,3 +49,5 @@ export default class NewTaskForm extends Component {
     );
   }
 }
+
+export default NewTaskForm;

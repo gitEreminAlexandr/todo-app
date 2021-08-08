@@ -1,49 +1,71 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import './TaskFilter.scss';
 
-export default class TaskFilter extends Component {
-  static defaultProps = {
-    onFilterType: () => {},
+const TaskFilter = ({ onFilterType }) => {
+  const [activeBtn, setActiveBtn] = useState('all');
+
+  const onFilterActive = (type) => {
+    onFilterType(type);
+    setActiveBtn(type);
   };
 
-  static propTypes = {
-    onFilterType: PropTypes.func,
-  };
+  const classNamesBtnAll = classNames({
+    'task-filter__button': true,
+    active: activeBtn === 'all',
+  });
 
-  onFilterActive = (event) => {
-    const { onFilterType } = this.props;
-    const targetItem = event.target;
-    const value = targetItem.innerHTML.toLowerCase();
-    onFilterType(value);
+  const classNamesBtnActive = classNames({
+    'task-filter__button': true,
+    active: activeBtn === 'active',
+  });
 
-    const el = document.querySelectorAll('.task-filter__button');
-    el.forEach((item) => {
-      item.classList.remove('active');
-    });
+  const classNamesBtnCompleted = classNames({
+    'task-filter__button': true,
+    active: activeBtn === 'completed',
+  });
 
-    targetItem.className += ' active';
-  };
+  return (
+    <ul className="task-filter">
+      <li className="task-filter__item task-filter__all">
+        <button className={classNamesBtnAll} onClick={() => onFilterActive('all')} type="button">
+          All
+        </button>
+      </li>
+      <li className="task-filter__item task-filter__active">
+        <button className={classNamesBtnActive} onClick={() => onFilterActive('active')} type="button">
+          Active
+        </button>
+      </li>
+      <li className="task-filter__item task-filter__completed">
+        <button className={classNamesBtnCompleted} onClick={() => onFilterActive('completed')} type="button">
+          Completed
+        </button>
+      </li>
+    </ul>
+  );
+};
 
-  render() {
-    return (
-      <ul className="task-filter">
-        <li className="task-filter__item task-filter__all">
-          <button className="task-filter__button active" onClick={this.onFilterActive} type="button">
-            All
-          </button>
-        </li>
-        <li className="task-filter__item task-filter__active">
-          <button className="task-filter__button" onClick={this.onFilterActive} type="button">
-            Active
-          </button>
-        </li>
-        <li className="task-filter__item task-filter__completed">
-          <button className="task-filter__button" onClick={this.onFilterActive} type="button">
-            Completed
-          </button>
-        </li>
-      </ul>
-    );
-  }
-}
+TaskFilter.defaultProps = {
+  onFilterType: () => {},
+};
+
+TaskFilter.propTypes = {
+  onFilterType: PropTypes.func,
+};
+
+export default TaskFilter;
+
+// const onFilterActive = (event) => {
+//   const targetItem = event.target;
+//   const value = targetItem.innerHTML.toLowerCase();
+//   onFilterType(value);
+
+//   const el = document.querySelectorAll('.task-filter__button');
+//   el.forEach((item) => {
+//     item.classList.remove('active');
+//   });
+
+//   targetItem.className += ' active';
+// };
