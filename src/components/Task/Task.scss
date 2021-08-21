@@ -37,15 +37,15 @@
     padding-right: 10px;
     align-items: center;
     padding-left: 50px;
-    width: 510px;
 
     &--description {
+      width: 191px;
       font-size: 22px;
       color: #4d4d4d;
     };
   
     &--created {
-      font-size: 13px;
+      font-size: 12px;
       color: gray;
     };
   };
@@ -109,3 +109,34 @@
   color: #cdcdcd;
   text-decoration: line-through;
 };
+
+.task__timer {
+  width: 83px;
+}
+
+.icon-pause, .icon-play {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+  cursor: pointer;
+}
+
+.icon-play {
+	font-size: 15px;
+}
+
+.icon-pause {
+  margin-right: 6px;
+}
+
+.icon-pause:after {
+	content: '⏸';
+}
+
+.icon-play:after {
+	content: '▶';
+}
+
+.task-none {
+  display: none;
+}

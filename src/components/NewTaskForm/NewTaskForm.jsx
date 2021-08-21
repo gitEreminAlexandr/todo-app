@@ -13,6 +13,8 @@ class NewTaskForm extends Component {
 
   state = {
     label: '',
+    timeMin: null,
+    timeSec: null,
   };
 
   onLabelChange = (event) => {
@@ -21,30 +23,65 @@ class NewTaskForm extends Component {
     });
   };
 
+  onTimeMin = (event) => {
+    this.setState({
+      timeMin: event.target.value,
+    });
+  };
+
+  onTimeSec = (event) => {
+    this.setState({
+      timeSec: event.target.value,
+    });
+  };
+
   onSubmit = (event) => {
     event.preventDefault();
 
     const { onAdd } = this.props;
-    const { label } = this.state;
+    const { label, timeMin, timeSec } = this.state;
 
     if (label.trim().length >= 3) {
-      onAdd(label);
+      onAdd(label, [Number(timeMin), Number(timeSec)]);
       this.setState({
         label: '',
+        timeMin: null,
+        timeSec: null,
       });
     }
   };
 
   render() {
-    const { label } = this.state;
+    const { label, timeMin, timeSec } = this.state;
     return (
-      <form onSubmit={this.onSubmit}>
+      <form className="new-task" onSubmit={this.onSubmit}>
         <input
-          className="new-task-form"
+          className="new-task__form"
           placeholder="What needs to be done?"
           onChange={this.onLabelChange}
           value={label}
         />
+        <input
+          className="new-task__timer timer-min"
+          type="number"
+          required
+          placeholder="Min"
+          min="0"
+          max="59"
+          value={timeMin || ''}
+          onChange={this.onTimeMin}
+        />
+        <input
+          className="new-task__timer timer-sec"
+          type="number"
+          required
+          placeholder="Sec"
+          min="0"
+          max="59"
+          value={timeSec || ''}
+          onChange={this.onTimeSec}
+        />
+        <button type="submit" aria-label="submit" />
       </form>
     );
   }

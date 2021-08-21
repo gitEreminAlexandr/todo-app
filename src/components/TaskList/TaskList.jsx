@@ -4,9 +4,9 @@ import Task from '../Task';
 import EditTask from '../EditTask';
 import './TaskList.scss';
 
-const TaskList = ({ todos, onDeleted, onEditLabel, onToggleEdit, onToggleCompleted }) => {
+const TaskList = ({ todos, onDeleted, filterType, onEditLabel, onToggleEdit, onToggleCompleted, onNewTimerTime }) => {
   const elements = todos.map((item) => {
-    const { id, ...itemProps } = item;
+    const { id } = item;
 
     if (item.edit) {
       const { date, completed, edit, ...editItem } = item;
@@ -16,10 +16,12 @@ const TaskList = ({ todos, onDeleted, onEditLabel, onToggleEdit, onToggleComplet
     return (
       <Task
         key={id}
-        {...itemProps}
+        {...item}
+        filterType={filterType}
         onDeleted={() => onDeleted(id)}
         onToggleEdit={() => onToggleEdit(id)}
         onToggleCompleted={() => onToggleCompleted(id)}
+        onNewTimerTime={onNewTimerTime}
       />
     );
   });
@@ -29,18 +31,22 @@ const TaskList = ({ todos, onDeleted, onEditLabel, onToggleEdit, onToggleComplet
 
 TaskList.defaultProps = {
   todos: [],
+  filterType: 'all',
   onDeleted: () => {},
   onEditLabel: () => {},
   onToggleEdit: () => {},
   onToggleCompleted: () => {},
+  onNewTimerTime: () => {},
 };
 
 TaskList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.object),
+  filterType: PropTypes.string,
   onDeleted: PropTypes.func,
   onEditLabel: PropTypes.func,
   onToggleEdit: PropTypes.func,
   onToggleCompleted: PropTypes.func,
+  onNewTimerTime: PropTypes.func,
 };
 
 export default TaskList;

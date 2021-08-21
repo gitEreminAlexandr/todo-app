@@ -4,7 +4,16 @@ import NewTaskForm from '../NewTaskForm';
 import TaskList from '../TaskList';
 import './Main.scss';
 
-const Main = ({ todos, filterType, onAdd, onDeleted, onEditLabel, onToggleEdit, onToggleCompleted }) => (
+const Main = ({
+  todos,
+  filterType,
+  onAdd,
+  onDeleted,
+  onEditLabel,
+  onToggleEdit,
+  onToggleCompleted,
+  onNewTimerTime,
+}) => (
   <main className="main">
     <NewTaskForm onAdd={onAdd} />
     <TaskList
@@ -14,6 +23,7 @@ const Main = ({ todos, filterType, onAdd, onDeleted, onEditLabel, onToggleEdit, 
       onEditLabel={onEditLabel}
       onToggleEdit={onToggleEdit}
       onToggleCompleted={onToggleCompleted}
+      onNewTimerTime={onNewTimerTime}
     />
   </main>
 );
@@ -26,6 +36,7 @@ Main.defaultProps = {
   onEditLabel: () => {},
   onToggleEdit: () => {},
   onToggleCompleted: () => {},
+  onNewTimerTime: () => {},
 };
 
 Main.propTypes = {
@@ -36,6 +47,7 @@ Main.propTypes = {
   onEditLabel: PropTypes.func,
   onToggleEdit: PropTypes.func,
   onToggleCompleted: PropTypes.func,
+  onNewTimerTime: PropTypes.func,
 };
 
 export default Main;

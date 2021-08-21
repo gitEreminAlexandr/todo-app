@@ -4,18 +4,6 @@ import PropTypes from 'prop-types';
 import './EditTask.scss';
 
 class EditTask extends Component {
-  static defaultProps = {
-    label: '',
-    id: 0,
-    onEditLabel: () => {},
-  };
-
-  static propTypes = {
-    label: PropTypes.string,
-    id: PropTypes.number,
-    onEditLabel: PropTypes.func,
-  };
-
   state = {
     // eslint-disable-next-line react/destructuring-assignment
     label: this.props.label,
@@ -49,5 +37,17 @@ class EditTask extends Component {
     );
   }
 }
+
+EditTask.defaultProps = {
+  label: '',
+  id: 0,
+  onEditLabel: () => {},
+};
+
+EditTask.propTypes = {
+  label: PropTypes.string,
+  id: PropTypes.number,
+  onEditLabel: PropTypes.func,
+};
 
 export default EditTask;
