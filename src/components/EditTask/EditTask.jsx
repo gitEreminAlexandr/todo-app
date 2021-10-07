@@ -1,42 +1,30 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
 import './EditTask.scss';
 
-class EditTask extends Component {
-  state = {
-    // eslint-disable-next-line react/destructuring-assignment
-    label: this.props.label,
+const EditTask = ({ label, id, onEditLabel }) => {
+  const [editLabel, setEditLabel] = useState(label);
+
+  const onLabelChange = (event) => {
+    setEditLabel(event.target.value);
   };
 
-  onLabelChange = (event) => {
-    this.setState({
-      label: event.target.value,
-    });
-  };
-
-  onSubmit = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault();
 
-    const { id, onEditLabel } = this.props;
-    const { label } = this.state;
-
-    if (label.trim().length >= 3) {
-      onEditLabel(id, label);
+    if (editLabel.trim().length >= 3) {
+      onEditLabel(id, editLabel);
     }
   };
 
-  render() {
-    const { label } = this.state;
-    return (
-      <li className="edit-task">
-        <form className="edit-task__form" onSubmit={this.onSubmit}>
-          <input className="edit-task__input" onChange={this.onLabelChange} value={label} />
-        </form>
-      </li>
-    );
-  }
-}
+  return (
+    <li className="edit-task">
+      <form className="edit-task__form" onSubmit={onSubmit}>
+        <input className="edit-task__input" onChange={onLabelChange} value={editLabel} />
+      </form>
+    </li>
+  );
+};
 
 EditTask.defaultProps = {
   label: '',

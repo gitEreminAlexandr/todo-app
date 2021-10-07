@@ -1,90 +1,69 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './NewTaskForm.scss';
 
-class NewTaskForm extends Component {
-  static defaultProps = {
-    onAdd: () => {},
+const NewTaskForm = ({ onAdd }) => {
+  const [label, setLabel] = useState('');
+  const [timeMin, setTimeMin] = useState(null);
+  const [timeSec, setTimeSec] = useState(null);
+
+  const onLabelChange = (event) => {
+    setLabel(event.target.value);
   };
 
-  static propTypes = {
-    onAdd: PropTypes.func,
+  const onTimeMin = (event) => {
+    setTimeMin(event.target.value);
   };
 
-  state = {
-    label: '',
-    timeMin: null,
-    timeSec: null,
+  const onTimeSec = (event) => {
+    setTimeSec(event.target.value);
   };
 
-  onLabelChange = (event) => {
-    this.setState({
-      label: event.target.value,
-    });
-  };
-
-  onTimeMin = (event) => {
-    this.setState({
-      timeMin: event.target.value,
-    });
-  };
-
-  onTimeSec = (event) => {
-    this.setState({
-      timeSec: event.target.value,
-    });
-  };
-
-  onSubmit = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault();
-
-    const { onAdd } = this.props;
-    const { label, timeMin, timeSec } = this.state;
 
     if (label.trim().length >= 3) {
       onAdd(label, [Number(timeMin), Number(timeSec)]);
-      this.setState({
-        label: '',
-        timeMin: null,
-        timeSec: null,
-      });
+      setLabel('');
+      setTimeMin(null);
+      setTimeSec(null);
     }
   };
 
-  render() {
-    const { label, timeMin, timeSec } = this.state;
-    return (
-      <form className="new-task" onSubmit={this.onSubmit}>
-        <input
-          className="new-task__form"
-          placeholder="What needs to be done?"
-          onChange={this.onLabelChange}
-          value={label}
-        />
-        <input
-          className="new-task__timer timer-min"
-          type="number"
-          required
-          placeholder="Min"
-          min="0"
-          max="59"
-          value={timeMin || ''}
-          onChange={this.onTimeMin}
-        />
-        <input
-          className="new-task__timer timer-sec"
-          type="number"
-          required
-          placeholder="Sec"
-          min="0"
-          max="59"
-          value={timeSec || ''}
-          onChange={this.onTimeSec}
-        />
-        <button type="submit" aria-label="submit" />
-      </form>
-    );
-  }
-}
+  return (
+    <form className="new-task" onSubmit={onSubmit}>
+      <input className="new-task__form" placeholder="What needs to be done?" onChange={onLabelChange} value={label} />
+      <input
+        className="new-task__timer timer-min"
+        type="number"
+        required
+        placeholder="Min"
+        min="0"
+        max="59"
+        value={timeMin || ''}
+        onChange={onTimeMin}
+      />
+      <input
+        className="new-task__timer timer-sec"
+        type="number"
+        required
+        placeholder="Sec"
+        min="0"
+        max="59"
+        value={timeSec || ''}
+        onChange={onTimeSec}
+      />
+      <button type="submit" aria-label="submit" />
+    </form>
+  );
+};
+
+NewTaskForm.defaultProps = {
+  onAdd: () => {},
+};
+
+NewTaskForm.propTypes = {
+  onAdd: PropTypes.func,
+};
 
 export default NewTaskForm;
