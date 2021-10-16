@@ -17,14 +17,8 @@ const Task = ({
   timerTimeSec,
   onNewTimerTime,
 }) => {
-  const [timeMin, setTimeMin] = useState(() => {
-    const initialState = timerTimeMin;
-    return initialState;
-  });
-  const [timeSec, setTimeSec] = useState(() => {
-    const initialState = timerTimeSec;
-    return initialState;
-  });
+  const [timeMin, setTimeMin] = useState(timerTimeMin);
+  const [timeSec, setTimeSec] = useState(timerTimeSec);
   const [activTimer, setActivTimer] = useState(false);
 
   useEffect(() => {
